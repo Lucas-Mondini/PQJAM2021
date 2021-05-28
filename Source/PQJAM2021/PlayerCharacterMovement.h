@@ -29,8 +29,6 @@ public:
 
 	void MoveForward(float Axis);
 	void MoveSide(float Axis);
-	void LookPitch(float Axis);
-	void LookYaw(float Axis);
 
 protected:
 	// Called when the game starts or when spawned
