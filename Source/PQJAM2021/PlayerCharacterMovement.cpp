@@ -55,6 +55,29 @@ void APlayerCharacterMovement::SetupPlayerInputComponent(UInputComponent* Player
 	PlayerInputComponent->BindAxis("Yaw", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("Pitch", this, &APawn::AddControllerPitchInput);
 
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+
+	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacterMovement::MoveForward);
+	PlayerInputComponent->BindAxis("MoveSide", this, &APlayerCharacterMovement::MoveSide);
 
 }
 
+void APlayerCharacterMovement::MoveForward(float Axis) {
+	FRotator Rotation = Controller->GetControlRotation();
+	FRotator YawRotation(0.0f , Rotation.Yaw, 0.0f);
+
+	FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+
+	AddMovementInput(Direction, Axis);
+
+}
+
+void APlayerCharacterMovement::MoveSide(float Axis) {
+	FRotator Rotation = Controller->GetControlRotation();
+	FRotator YawRotation(0.0f, Rotation.Yaw, 0.0f);
+
+	FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+
+	AddMovementInput(Direction, Axis);
+}
