@@ -61,10 +61,13 @@ void APlayerCharacterMovement::SetupPlayerInputComponent(UInputComponent* Player
 	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacterMovement::MoveForward);
 	PlayerInputComponent->BindAxis("MoveSide", this, &APlayerCharacterMovement::MoveSide);
 
+	PlayerInputComponent->BindAction("Action", IE_Pressed, this, &APlayerCharacterMovement::PlayerAction);
+
 }
 
 void APlayerCharacterMovement::MoveForward(float Axis) {
-	FRotator Rotation = Controller->GetControlRotation();
+	AController* controller = GetController();
+	FRotator Rotation = controller->GetControlRotation();
 	FRotator YawRotation(0.0f , Rotation.Yaw, 0.0f);
 
 	FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
@@ -74,10 +77,16 @@ void APlayerCharacterMovement::MoveForward(float Axis) {
 }
 
 void APlayerCharacterMovement::MoveSide(float Axis) {
-	FRotator Rotation = Controller->GetControlRotation();
+	AController* controller = GetController();
+	FRotator Rotation = controller->GetControlRotation();
 	FRotator YawRotation(0.0f, Rotation.Yaw, 0.0f);
 
 	FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
 	AddMovementInput(Direction, Axis);
+}
+
+void APlayerCharacterMovement::PlayerAction() {
+	AController* controller = GetController();
+	controller->Possess(pawn);
 }
