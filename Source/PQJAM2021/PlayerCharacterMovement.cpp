@@ -52,14 +52,16 @@ void APlayerCharacterMovement::SetupPlayerInputComponent(UInputComponent* Player
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAxis("Yaw", this, &APawn::AddControllerYawInput);
-	PlayerInputComponent->BindAxis("Pitch", this, &APawn::AddControllerPitchInput);
+	if (Controller) {
+		PlayerInputComponent->BindAxis("Yaw", this, &APawn::AddControllerYawInput);
+		PlayerInputComponent->BindAxis("Pitch", this, &APawn::AddControllerPitchInput);
 
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
-	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+		PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+		PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
-	PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacterMovement::MoveForward);
-	PlayerInputComponent->BindAxis("MoveSide", this, &APlayerCharacterMovement::MoveSide);
+		PlayerInputComponent->BindAxis("MoveForward", this, &APlayerCharacterMovement::MoveForward);
+		PlayerInputComponent->BindAxis("MoveSide", this, &APlayerCharacterMovement::MoveSide);
+	}
 
 }
 
